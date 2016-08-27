@@ -1,0 +1,39 @@
+extends layout
+
+block content
+ body
+    header.navbar.navbar-primary.navbar-top
+      .container
+        .row
+          .col-md-6.col-sm-6
+            a.navbar-brand.bac-header(href='index.html') Buenos Aires Ciudad
+          .col-md-6.col-sm-6
+            h5.sub-brand En todo estás vos
+
+    // CONTENIDO
+    main.main-container(role='main', ng-controller="bustrapController")
+      .container
+        .row
+          .col-md-12
+            h1 El próximo colectivo llega en:
+            p{{resp}}
+              form(action="", method="post")
+                .form-group
+                  label(for="q")
+                  //input(type="text", name="q", value="#{q}", placeholder="Tiempo de arribo",ng-init="resp=''" ng-model="text" ng-change="actualizar(text)" ng-model-options='{ debounce: 1000 }').form-control
+                input(id="escuchar", value="Escuchar").btn.btn-default.pull-right
+    // FIN DE CONTENIDO
+    footer
+      .footer
+        .container
+          .row
+            .col-md-6.col-sm-6
+              a.navbar-brand.bac-footer(href='http://www.buenosaires.gob.ar', target='_blank') Buenos Aires Ciudad
+            .col-md-6.col-sm-6
+              .sub-brand
+                p
+                  | Dirección General de Gobierno Electrónico
+                  br
+                  span.text-muted Ministerio de Modernización
+    // JAVASCRIPT EXTRA
+  
