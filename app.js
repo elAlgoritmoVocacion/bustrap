@@ -13,6 +13,43 @@ var users = require('./routes/users');
 
 var app = express();
 
+
+var speech_to_text = watson.speech_to_text({
+  url: 'https://stream.watsonplatform.net/speech-to-text/api',
+  username: 'a578e4e0-da93-4f1f-86f0-9fc21ec34253',
+  password: 'ZhDnx3dawEZq',
+  version: 'v1'
+});
+
+var params = {
+  content_type: 'audio/wav',
+  continuous: true,
+  interim_results: true
+};
+
+// Create the stream.
+var recognizeStream = speech_to_text.createRecognizeStream(params);
+
+// Pipe in the audio.
+//fs.createReadStream('output.wav').pipe(recognizeStream);
+
+// Pipe out the transcription to a file.
+recognizeStream.pipe(fs.createWriteStream('transcription.txt'));
+
+// Get strings instead of buffers from 'data' events.
+recognizeStream.setEncoding('utf8');
+
+// Listen for events.
+recognizeStream.on('data', function(event) { onEvent('Data:', event); });
+recognizeStream.on('results', function(event) { onEvent('Results:', event); });
+recognizeStream.on('error', function(event) { onEvent('Error:', event); });
+recognizeStream.on('close-connection', function(event) { onEvent('Close:', event); });
+
+// Displays events on the console.
+function onEvent(name, event) {
+    console.log(name, JSON.stringify(event, null, 2));
+};
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -58,6 +95,8 @@ app.use(function(err, req, res, next) {
     error: {}
   });
 });
+
+
 
 
 module.exports = app;
